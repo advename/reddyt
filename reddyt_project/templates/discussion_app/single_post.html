@@ -1,0 +1,53 @@
+<!-- The index.html extends the base.html -->
+{% extends 'base.html' %} {% block title %}{{post.title}}{% endblock title %}
+
+<!-- The code below is inserted inside the "content" area of base.html -->
+{% block content %}
+
+<div id="single-post-page">
+<a class="return-to-home" href="{{request.META.HTTP_REFERER}}">< return</a>
+    <div id="post" class="post-{{post.id}}">
+        <div class="left">
+            <button class="upvote post-vote" data-postid="{{ post.id }}">&#x25B2;</button>
+            <p class="votes">{{ post.votes }}</p>
+            <button class="downvote post-vote" data-postid="{{ post.id }}">&#x25BC;</button>
+          </div>
+          <div class="right">
+          <h1 class="post-title">{{ post.title }}</h1>
+            <p class="text">{{ post.text }}</p>
+            <p class="author">{{ post.user.username }}</p>
+          </a>
+          </div>
+    </div>
+    {% if user.is_authenticated %}
+        <form class="new-comment" action="{% url "discussion_app:comment_form" post.id %}" method="POST">
+            {% csrf_token %}
+            <textarea name="text" name="text" minlength="10" rows="4" cols="50" placeholder="Write a comment"></textarea>
+            <input type="submit" value="Send"/>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        </form>
+     {% else %}
+        <p>You need to <a href="{% url 'account_app:login' %}">login</a> to write a comment.</p>
+    {% endif %}
+    
+    
+    
+    <div class="comment-list">
+        <h3>Comment{{post.comment_set.count|pluralize}} {{post.comment_set.count}}</h3>
+        {% for comment in post.comment_set.all %}
+        <div class="comment">
+            <div class="wrapper">
+                <p class="author">{{comment.user.username}}</p>
+                <p class="class text">{{comment.text}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+
+{% load static %}
+<script src="{% static "global/js/main.js" %}"></script>
+{% endblock content%}

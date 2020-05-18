@@ -1,0 +1,33 @@
+<!-- The index.html extends the base.html -->
+{% extends 'base.html' %} {% block title %}Login{% endblock title %}
+
+<!-- The code below is inserted inside the "content" area of base.html -->
+{% block content %}
+<div id="user" class="account-page">
+<h1>Hi {{ user.get_username }}</h1>
+<section>
+    <h3>Overview</h3>
+    <p><strong>{{user.get_username}}</strong> is a member since {{user.date_joined}}</p>
+</section>
+<section>
+    <h3>Change password</h3>
+    <form action="{% url "account_app:update_password" %}" method="POST">
+            {% csrf_token %}
+            <input type="password" name="old_password" placeholder="Old Password">
+            <input type="password" name="new_password1" placeholder="New Password">
+            <input type="password" name="new_password2" placeholder="Confirm New Password">
+            <button>Update password</button>
+    </form>
+    {% if status_message %} <p class="status-msg">{{status_message}}</p> {% endif %}
+</section>
+<section>
+<h3>Delete user</h3>
+    <a id="delete-user" href="{% url "account_app:delete" %}">Delete the current user: {{user.get_username}}</a>
+</section>
+</div>
+
+
+
+{% load static %}
+<script src="{% static "global/js/main.js" %}"></script>
+{% endblock content%}

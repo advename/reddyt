@@ -1,0 +1,188 @@
+*,
+*:before,
+*:after {
+  padding: 0px;
+  margin: 0px;
+  font-family: sans-serif;
+  box-sizing: border-box;
+  font-size: 16px; }
+
+body {
+  background: #eee9e9;
+  width: 100vw;
+  max-width: 100%; }
+
+h1 {
+  font-size: 1.6rem; }
+
+h3 {
+  font-size: 1.3rem; }
+
+header {
+  width: 100%;
+  height: 60px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px; }
+  header .logo {
+    font-size: 1.8rem;
+    font-family: courier;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    header .logo:after {
+      content: "\2689";
+      display: block;
+      font-size: 1.8rem;
+      color: red; }
+  header nav ul,
+  header nav li,
+  header nav a {
+    list-style-type: none;
+    text-decoration: none; }
+  header nav a {
+    padding: 10px 15px; }
+
+#discussions {
+  width: 90vw;
+  position: relative;
+  margin: 30px auto; }
+  #discussions .discussion {
+    background: white;
+    width: 90vw;
+    min-height: 40px;
+    display: inline-flex;
+    border-radius: 5px;
+    margin: 10px 0px;
+    border: 1px solid grey; }
+    #discussions .discussion .left {
+      min-width: 30px;
+      background: #d9d9d9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px 0px 0px 5px;
+      flex-direction: column; }
+      #discussions .discussion .left button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: grey; }
+        #discussions .discussion .left button:hover {
+          color: black; }
+    #discussions .discussion .right {
+      padding: 10px 20px;
+      text-decoration-color: black;
+      text-decoration: none;
+      color: black; }
+      #discussions .discussion .right .title {
+        font-weight: bold;
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        transition: all 0.2s; }
+      #discussions .discussion .right .text {
+        margin-bottom: 0.3rem; }
+      #discussions .discussion .right .author {
+        color: grey; }
+      #discussions .discussion .right:hover .title {
+        color: #0d0de9; }
+
+#single-post-page {
+  width: 90vw;
+  position: relative;
+  margin: 30px auto; }
+  #single-post-page .post-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s; }
+  #single-post-page #post {
+    background: white;
+    width: 90vw;
+    min-height: 40px;
+    display: inline-flex;
+    border-radius: 5px;
+    margin: 10px 0px;
+    border: 1px solid grey; }
+    #single-post-page #post .left {
+      min-width: 30px;
+      background: #d9d9d9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px 0px 0px 5px;
+      flex-direction: column; }
+      #single-post-page #post .left button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: grey; }
+        #single-post-page #post .left button:hover {
+          color: black; }
+    #single-post-page #post .right {
+      padding: 10px 20px;
+      text-decoration-color: black;
+      text-decoration: none;
+      color: black; }
+      #single-post-page #post .right .text {
+        margin-bottom: 0.3rem; }
+      #single-post-page #post .right .author {
+        color: grey; }
+      #single-post-page #post .right:hover .title {
+        color: #0d0de9; }
+  #single-post-page .comment-list {
+    background: white;
+    width: 100%;
+    margin-top: 30px; }
+    #single-post-page .comment-list .comment {
+      padding: 15px;
+      border-bottom: 1px solid grey; }
+      #single-post-page .comment-list .comment .author {
+        font-weight: bold;
+        margin-bottom: 6px; }
+  #single-post-page form {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    max-width: none;
+    margin: 0 auto; }
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 70vw;
+  max-width: 600px;
+  margin: 0 auto; }
+  form input,
+  form button {
+    margin: 10px 0px;
+    height: 35px;
+    border: none;
+    padding-left: 5px; }
+  form button,
+  form input[type="submit"] {
+    padding-left: 0px;
+    background: gray;
+    color: white;
+    cursor: pointer; }
+    form button:hover,
+    form input[type="submit"]:hover {
+      background: #505050; }
+
+#user h3 {
+  margin-bottom: 10px;
+  margin-left: -10px; }
+
+#user section {
+  width: 70vw;
+  max-width: 600px;
+  margin: 20px auto 40px auto;
+  padding-left: 10px; }
+
+.status-msg {
+  color: red; }
+
+#delete-user {
+  color: red; }

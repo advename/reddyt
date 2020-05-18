@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {% load static %} <link rel="stylesheet" href="{% static "global/css/main.css" %}" />
+
+    <title>
+      Pollster {% block title %}<!-- text inserted from another template -->{% endblock %}
+    </title>
+  </head>
+  <body>
+    <header>
+    <p class="logo">reddyt</p>
+      <nav>
+        <ul>
+          <li>
+            <a href="{% url 'discussion_app:index' %}">Home</a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'discussion_app:new_post' %}">New Post</a>
+              <a href="{% url 'account_app:user' %}">&#128100;{{ user.get_username }}</a>
+              <a href="{% url "account_app:logout" %}">Logout</a>
+            {% else %}
+              <a href="{% url 'account_app:login' %}">Login</a>
+              <a href="{% url 'account_app:sign_up'  %}">Signup</a>
+            {% endif %}
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    {% block content %}
+    <!-- HTML content inserted from another template -->
+    <!-- This block name is "content" -->
+    {% endblock %}
+  </body>
+  <footer>
+    <p>Copyright 2020</p>
+  </footer>
+</html>

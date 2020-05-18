@@ -1,0 +1,23 @@
+<!-- The index.html extends the base.html -->
+{% extends 'base.html' %} {% block title %}Login{% endblock title %}
+
+<!-- The code below is inserted inside the "content" area of base.html -->
+{% block content %}
+<div id="login" class="account-page">
+<h1>Sign Up</h1>
+    <form action="{% url "account_app:sign_up" %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username">
+            <input type="email" name="email" placeholder="Email">
+            <input type="password" name="password1" placeholder="Password">
+            <input type="password" name="password2" placeholder="Confirm Password">
+            <button>Log in</button>
+    </form>
+    {% if error_message %} <p class="status-msg">{{error_message}}</p> {% endif %}
+</div>
+
+
+
+{% load static %}
+<script src="{% static "global/js/main.js" %}"></script>
+{% endblock content%}

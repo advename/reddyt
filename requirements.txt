@@ -1,0 +1,12 @@
+asgiref==3.2.7
+autopep8==1.5.2
+decorator==4.4.2
+Django==3.0.6
+django-extensions==2.2.9
+django-static-precompiler==1.8.2
+djangorestframework==3.11.0
+pycodestyle==2.6.0
+pytz==2020.1
+six==1.14.0
+sqlparse==0.3.1
+validators==0.15.0

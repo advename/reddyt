@@ -1,0 +1,21 @@
+<!-- The index.html extends the base.html -->
+{% extends 'base.html' %} {% block title %}Login{% endblock title %}
+
+<!-- The code below is inserted inside the "content" area of base.html -->
+{% block content %}
+<div id="new-post">
+<h1>Create a new post</h1>
+    <form action="{% url "discussion_app:new_post" %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Post title">
+            <textarea name="text" cols="30" rows="10" placeholder="Post text"></textarea>
+            <button>Create new post</button>
+    </form>
+    {% if error_message %} <p class="status-msg">{{error_message}}</p> {% endif %}
+</div>
+
+
+
+{% load static %}
+<script src="{% static "global/js/main.js" %}"></script>
+{% endblock content%}
