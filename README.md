@@ -2,9 +2,7 @@
 
 reddyt is a small reddit clone written with Django and Django REST Framework.
 
-<div style="max-width: 300px; height: auto;">
 ![Screenshot of reddyt](screenshot.png)
-<div>
 
 Improvements I'm aware of that could be made if it goes into production:
 
