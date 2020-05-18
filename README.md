@@ -1,4 +1,6 @@
-#reddyt
+# reddyt
+
+![Screenshot of reddyt](screenshot.png)
 
 reddyt is a small reddit clone written with Django and Django REST Framework.
 
