@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from notification_app.models import Notification
 
 import validators
 
@@ -82,10 +83,17 @@ def sign_up(request):
 @login_required
 def user(request):
     context = {}
+
+    # Check if there is a status message
     status_message = None
     if 'status_message' in request.session:
-        context = {"status_message": request.session['status_message']}
+        context["status_message"] = request.session['status_message']
         del request.session['status_message']
+
+    # Notifications
+    notifications = Notification.objects.filter(recipient=request.user)
+    context["notifications"] = notifications
+
     return render(request, 'account_app/user_page.html', context)
 
 

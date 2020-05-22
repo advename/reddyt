@@ -2,12 +2,15 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required  # add this line
+from asgiref.sync import async_to_sync
 
 
 import validators
 
 # Create your views here.
 from .models import Post, Vote, Comment
+from notification_app.models import Notification
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -31,12 +34,16 @@ def comment_form(request, post_id):
 
         # Check if text is valid
         text = request.POST["text"]
+        post_owner = get_object_or_404(User, id=request.POST['post_owner'])
         if not text and len(text) < 10:
             request.session['error_message'] = 'Invalid message'
             return redirect("discussion_app:single_post", post_id=post_id)
 
         user = request.user
+        Notification.objects.create(
+            recipient_id=request.POST['post_owner'], sender=user, notification_type=Notification.COMMENT, post_id=post_id)
         Comment.objects.create(text=text, user=user, post_id=post_id)
+
         return redirect("discussion_app:single_post", post_id=post_id)
 
 

@@ -22,8 +22,9 @@
     {% if user.is_authenticated %}
         <form class="new-comment" action="{% url "discussion_app:comment_form" post.id %}" method="POST">
             {% csrf_token %}
+            <input type="hidden" name="post_owner" value="{{post.user.id}}" />
             <textarea name="text" name="text" minlength="10" rows="4" cols="50" placeholder="Write a comment"></textarea>
-            <input type="submit" value="Send"/>
+            <input type="submit" class="submit-comment" value="Send"/>
             {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         </form>
      {% else %}

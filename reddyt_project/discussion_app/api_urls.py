@@ -1,7 +1,5 @@
 from django.urls import path
-from discussion_app import api_views
-
-from rest_framework.urlpatterns import format_suffix_patterns
+from . import api_views
 
 # explanation of urlpatterns down below
 urlpatterns = [

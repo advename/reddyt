@@ -56,7 +56,22 @@ header {
 
     a {
       padding: 10px 15px;
+      position: relative;
     }
+  }
+
+  #notification-number {
+    background: red;
+    position: absolute;
+    color: white;
+    width: 20px;
+    height: 20px;
+    top: -3px;
+    right: -3px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
   }
 }
 
@@ -232,7 +247,7 @@ form {
   }
 }
 
-#user {
+#user-profile {
   h3 {
     margin-bottom: 10px;
     margin-left: -10px;
@@ -243,6 +258,22 @@ form {
     margin: 20px auto 40px auto;
     padding-left: 10px;
   }
+  .notif-item {
+    border: 1px solid #c6c6c6;
+    padding: 10px;
+    border-radius: 5px;
+    background: #edebeb;
+    margin: 5px 0px;
+
+    &.unread {
+      background: #a9ffbb;
+    }
+
+    a {
+      color: #162deb;
+      text-decoration: none;
+    }
+  }
 }
 
 .status-msg {
@@ -250,7 +281,4 @@ form {
 }
 #delete-user {
   color: red;
-}
-
-#new-post {
 }

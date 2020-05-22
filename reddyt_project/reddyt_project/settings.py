@@ -29,9 +29,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'account_app',
     'discussion_app',
     'api_app',
+    'notification_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -114,6 +116,18 @@ REST_FRAMEWORK = {
     ]
 }
 
+# Channels
+ASGI_APPLICATION = 'reddyt_project.routing.application'
+
+# Channel layers
+CHANNEL_LAYERS = {
+    "default": {
+        # <- use this ONLY in development, production env. should use redis
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -146,5 +160,5 @@ CSS FILES
 To compile the reddyt_project/static/css/ scss files,
 use the npm package node-sass, install it globally,
 and run:
-    node-sass main.scss main.css -w
+    node-sass reddyt_project/static/css/main.scss reddyt_project/static/css/main.css -w
 '''
