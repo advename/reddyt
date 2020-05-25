@@ -12,11 +12,13 @@
     <section>
         <h3>Notification{{notifications.count|pluralize}} {{notifications.count}} </h3>
         {% if notifications.count %}
-            {% for notification in notifications %}
-                <div class="notif-item {{ notification.read|yesno:",unread" }}">
-                    <a href="{% url "discussion_app:single_post" notification.post.id %}">{{notification}}</a>
-                </div>
-            {% endfor %}
+            <div class="notification-list">
+                {% for notification in notifications %}
+                    <div class="notif-item {{ notification.read|yesno:",unread" }}">
+                        <a href="{% url "notification_app:mark_as_read_and_redir" notification.id %}">{{notification}}</a>
+                    </div>
+                {% endfor %}
+            </div>
         {% else %}
             <p>There are no notifications</p>
         {% endif %}

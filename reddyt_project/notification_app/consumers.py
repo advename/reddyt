@@ -27,5 +27,6 @@ class NotificationConsumer(WebsocketConsumer):
 
     def send_message(self, event):
         self.send(text_data=json.dumps({
-            "notification": event['notification']
+            "unread_count": event['unread_count'],
+            "notification_type": event['notif_type']
         }))

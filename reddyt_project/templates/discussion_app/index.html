@@ -12,18 +12,12 @@
       <button class="downvote post-vote" data-postid="{{ post.id }}">&#x25BC;</button>
     </div>
     <a class="right" href="{% url 'discussion_app:single_post' post.id %}">
+      <p class="author">{{ post.user.username }} - {{ post.created_timestamp|date:"d/m/Y" }}</p>
       <p class="title">{{ post.title }}</p>
       <p class="text">{{ post.text|truncatechars:100 }}</p>
-      <p class="author">{{ post.user.username }}</p>
     </a>
   </div>
   {% endfor %}
 </div>
-
-<div>
-  <button id="test">Click me</button>
-</div>
-
-
 
 {% endblock content%}

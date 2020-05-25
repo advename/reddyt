@@ -13,10 +13,9 @@
             <button class="downvote post-vote" data-postid="{{ post.id }}">&#x25BC;</button>
           </div>
           <div class="right">
-          <h1 class="post-title">{{ post.title }}</h1>
+            <p class="author">{{ post.user.username }} - {{ post.created_timestamp|date:"d/m/Y" }}</p>
+            <h1 class="post-title">{{ post.title }}</h1>
             <p class="text">{{ post.text }}</p>
-            <p class="author">{{ post.user.username }}</p>
-          </a>
           </div>
     </div>
     {% if user.is_authenticated %}
@@ -47,8 +46,4 @@
 
 </div>
 
-
-
-{% load static %}
-<script src="{% static "global/js/main.js" %}"></script>
 {% endblock content%}

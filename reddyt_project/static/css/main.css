@@ -46,7 +46,7 @@ header {
   header nav a {
     padding: 10px 15px;
     position: relative; }
-  header #notification-number {
+  header #notification-counter {
     background: red;
     position: absolute;
     color: white;
@@ -57,7 +57,8 @@ header {
     display: none;
     justify-content: center;
     align-items: center;
-    border-radius: 50%; }
+    border-radius: 50%;
+    font-size: 12px; }
 
 #discussions {
   width: 90vw;
@@ -99,7 +100,8 @@ header {
       #discussions .discussion .right .text {
         margin-bottom: 0.3rem; }
       #discussions .discussion .right .author {
-        color: grey; }
+        color: grey;
+        font-size: 0.8rem; }
       #discussions .discussion .right:hover .title {
         color: #0d0de9; }
 
@@ -142,7 +144,8 @@ header {
       #single-post-page #post .right .text {
         margin-bottom: 0.3rem; }
       #single-post-page #post .right .author {
-        color: grey; }
+        color: grey;
+        font-size: 0.8rem; }
       #single-post-page #post .right:hover .title {
         color: #0d0de9; }
   #single-post-page .comment-list {
@@ -153,6 +156,7 @@ header {
       padding: 15px;
       border-bottom: 1px solid grey; }
       #single-post-page .comment-list .comment .author {
+        font-size: 0.8rem;
         font-weight: bold;
         margin-bottom: 6px; }
   #single-post-page form {
@@ -194,6 +198,11 @@ form {
   margin: 20px auto 40px auto;
   padding-left: 10px; }
 
+#user-profile .notification-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px; }
+
 #user-profile .notif-item {
   border: 1px solid #c6c6c6;
   padding: 10px;
@@ -211,3 +220,10 @@ form {
 
 #delete-user {
   color: red; }
+
+footer {
+  padding-top: 50px;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center; }

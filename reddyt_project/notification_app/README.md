@@ -11,7 +11,7 @@ The purpose of the `notification_app` is to:
 All notifications are viewable inside the users profile page.
 
 The count of all unread notifications should be displayed to the user in the navbar.
-![Notification overview and navbar count of unread ones](notif_preview.jpg)
+![Notification overview and navbar count of unread ones](readme_img/notif_preview.jpg)
 
 ### Implementation:
 
@@ -31,13 +31,13 @@ Two approaches, Django REST API and Channels (websockets), have been implemented
 
 First of all, we want to display, in the navbar to the recipeint, all unread notifications whenever they re-/load the page.
 For this, the user has of course to be authenticated.
-![REST API Flowchart](display_unread_notif_flowchart.jpg)
+![REST API Flowchart](readme_img/display_unread_notif_flowchart.jpg)
 
 #### Channels (Websockets) Workflow
 
 For the case when a user is active on a page and did not reload the it, we want to push new notifications to them. For this case, Django Channels (websockets) are used, so that we can update the notification counter in the navbar.
 
-![Channels Flowchart](websocket_unread_notif_flow.jpg)
+![Channels Flowchart](readme_img/websocket_unread_notif_flow.jpg)
 
 ## Additional explanation:
 

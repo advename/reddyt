@@ -1,6 +1,11 @@
 addEventListener("load", function() {
   // Init
   unreadNotificationHandler();
+
+  // Force Unread notification count GET request to the API by using the notif_ref=1 query parameter.
+  if (getURLParamValue("notif_ref") == "true") {
+    fetchUnreadNotification();
+  }
 });
 
 const currentURL =
@@ -90,8 +95,11 @@ socket.addEventListener("close", function(event) {
 socket.addEventListener("message", function(event) {
   message = JSON.parse(event.data);
   console.log("Message from server ", message);
-  if ("notification" in message) {
-    updateUnreadNotification(1);
+
+  // Listen for updates in unreaded notification counts
+  if ("unread_count" in message) {
+    console.log(message.unread_count);
+    setUnreadNotification(message.unread_count);
   }
 });
 
@@ -108,7 +116,7 @@ socket.addEventListener("message", function(event) {
 /**
  * Notification circle displaying the amount of notifications
  */
-const notifSpan = document.querySelector("#notification-number");
+const notifSpan = document.querySelector("#notification-counter");
 const unreadStorageName = "unread_notif";
 
 function unreadNotificationHandler() {
@@ -120,23 +128,11 @@ function unreadNotificationHandler() {
 }
 
 function setUnreadNotification(val) {
-  console.log("2");
   localStorage.setItem(unreadStorageName, val);
   displayUnreadNotificationStatus();
 }
 
-function updateUnreadNotification(val) {
-  let old_val = 0;
-  if (existsUnreadNotificationStorage) {
-    old_val = Number(localStorage.getItem(unreadStorageName));
-  }
-  let new_val = old_val + val;
-  localStorage.setItem(unreadStorageName, new_val);
-  displayUnreadNotificationStatus();
-}
-
 function displayUnreadNotificationStatus() {
-  console.log("3");
   if (!existsUnreadNotificationStorage) {
     return fetchUnreadNotification();
   }
@@ -163,7 +159,6 @@ function fetchUnreadNotification() {
       }
     })
     .then(data => {
-      console.log("1");
       setUnreadNotification(data.unread_notif);
     })
     .catch(err => {
@@ -189,4 +184,28 @@ function existsUnreadNotificationStorage() {
 function getCookieValue(a) {
   var b = document.cookie.match("(^|[^;]+)\\s*" + a + "\\s*=\\s*([^;]+)");
   return b ? b.pop() : "";
+}
+
+// Get URL parameter query values, Source: https://stackoverflow.com/a/979995/3673659, but modified version
+function getURLParamValue(query) {
+  var parameters = location.search.substr(1);
+  var vars = parameters.split("&");
+  var query_string = {};
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    var key = decodeURIComponent(pair[0]);
+    var value = decodeURIComponent(pair[1]);
+    // If first entry with this name
+    if (typeof query_string[key] === "undefined") {
+      query_string[key] = decodeURIComponent(value);
+      // If second entry with this name
+    } else if (typeof query_string[key] === "string") {
+      var arr = [query_string[key], decodeURIComponent(value)];
+      query_string[key] = arr;
+      // If third or later entry with this name
+    } else {
+      query_string[key].push(decodeURIComponent(value));
+    }
+  }
+  return query_string[query];
 }
