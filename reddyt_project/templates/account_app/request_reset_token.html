@@ -1,0 +1,20 @@
+<!-- The index.html extends the base.html -->
+{% extends 'base.html' %} {% block title %}Login{% endblock title %}
+
+<!-- The code below is inserted inside the "content" area of base.html -->
+{% block content %}
+<div id="login" class="account-page">
+<h1>Password reset</h1>
+    {% if request_received %}
+        <p>If the email exists in our system, you should receive a reset link in your inbox.</p>
+    {% else %}
+        <form action="{% url "account_app:request_reset_token" %}" method="POST">
+        {% csrf_token %}
+        <p>Forgot your password? Insert your email address and we will send you a reset link.</p>
+        <input type="email" name="email" placeholder="Email">
+        <button>Continue</button>
+        </form>
+    {% endif %}
+</div>
+
+{% endblock content%}

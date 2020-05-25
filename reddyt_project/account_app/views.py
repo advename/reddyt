@@ -3,9 +3,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
 from notification_app.models import Notification
+from .models import PasswordResetRequest
 
 import validators
+import secrets
 
 
 def login(request):
@@ -136,3 +139,56 @@ def delete(request):
     # delete user
     request.user.delete()
     return HttpResponseRedirect(reverse('account_app:logout'))
+
+
+# Handle reset request and create link
+def request_reset_token(request):
+    context = {}
+    if request.method == "POST":
+        req_email = request.POST['email']
+        user = None
+
+        if req_email:
+            try:
+                user = User.objects.get(email=req_email)
+            except:
+                print(f"Invalid email request: {req_email}")
+                # DO NOT respond to the frontend that the user did not exist,
+                # because an attacker could do an user enumeration attack.
+
+        if user:
+            token = secrets.token_urlsafe()  # generates a random token
+            prr = PasswordResetRequest.objects.create(user=user, token=token)
+            print("====================")
+            print("Token: " + prr.token)
+            print("====================")
+
+            # send here an email with the reset URL ...
+        context = {"request_received": True}
+
+    return render(request, 'account_app/request_reset_token.html', context)
+
+# Check the reset link
+
+
+def password_reset(request):
+    if request.method == "POST":
+        post_user = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        token = request.POST['token']
+
+        if password == confirm_password:
+            try:
+                prr = PasswordResetRequest.objects.get(token=token)
+                prr.save()
+            except:
+                print("Invalid password reset attempt.")
+                return render(request, 'auth_app/password_reset.html')
+
+            user = prr.user
+            user.set_password(password)
+            user.save()
+            return HttpResponseRedirect(reverse('auth_app:login'))
+
+    return render(request, 'auth_app/password_reset.html')

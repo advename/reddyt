@@ -9,5 +9,7 @@ urlpatterns = [
     path('sign-up/', views.sign_up, name="sign_up"),
     path('update-password/', views.update_password, name="update_password"),
     path('logout/', views.logout, name="logout"),
-    path('delete/', views.delete, name="delete")
+    path('delete/', views.delete, name="delete"),
+    path('request-reset-token/', views.request_reset_token,
+         name="request_reset_token"),
 ]
