@@ -2,7 +2,9 @@ from django.contrib.auth import authenticate, login as dj_login, logout as dj_lo
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from django.conf import settings  # import email sender address
 
 from notification_app.models import Notification
 from .models import PasswordResetRequest
@@ -20,7 +22,7 @@ def login(request):
    form has been filled out and somebody tried to log in
    else, if it is different than a POST request, it means that
    the page has been opened to log in. In that case
-   we simply return the login.html file as seen in line 19    
+   we simply return the login.html file as seen in line 19
     '''
     if request.method == "POST":
         user = authenticate(
@@ -129,16 +131,17 @@ def update_password(request):
     return redirect("account_app:user")
 
 
+@login_required
 def logout(request):
     dj_logout(request)
-    return HttpResponseRedirect(reverse('discussion_app:index'))
+    return redirect('discussion_app:index')
 
 
 @login_required
 def delete(request):
     # delete user
     request.user.delete()
-    return HttpResponseRedirect(reverse('account_app:logout'))
+    return redirect('account_app:logout')
 
 
 # Handle reset request and create link
@@ -158,10 +161,27 @@ def request_reset_token(request):
 
         if user:
             token = secrets.token_urlsafe()  # generates a random token
-            prr = PasswordResetRequest.objects.create(user=user, token=token)
+            PasswordResetRequest.objects.filter(
+                user=user, active=True).update(active=False)  # make old requests inactive
+            prr = PasswordResetRequest.objects.create(
+                user=user, token=token, active=True)  # create new request + activate
             print("====================")
             print("Token: " + prr.token)
             print("====================")
+            # Send email
+            reset_url = request.build_absolute_uri(reverse(
+                'account_app:reset_password')) + "?token=" + token
+            alt_body = f"To reset your password, click the following link: {reset_url}"
+            body = ("<html>"
+                    "<head></head>"
+                    "<body>"
+                    f"<h4>To reset your password, click <a href='{reset_url} '>this link</a></h4>"
+                    "</body>"
+                    "</html>"
+                    )
+
+            send_mail('Password reset', alt_body, settings.EMAIL_HOST_USER, [
+                      settings.EMAIL_HOST_USER, ], html_message=body)
 
             # send here an email with the reset URL ...
         context = {"request_received": True}
@@ -171,24 +191,41 @@ def request_reset_token(request):
 # Check the reset link
 
 
-def password_reset(request):
+def reset_password(request):
+    context = {}
+    token = request.GET.get('token', None)
+
     if request.method == "POST":
-        post_user = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
-        token = request.POST['token']
+        context = {"invalid_token": True}
+        if token:
+            password = request.POST['password1']
+            confirm_password = request.POST['password2']
 
-        if password == confirm_password:
-            try:
-                prr = PasswordResetRequest.objects.get(token=token)
-                prr.save()
-            except:
-                print("Invalid password reset attempt.")
-                return render(request, 'auth_app/password_reset.html')
+            if password == confirm_password:
+                try:
+                    # Get the instance with the token
+                    prr = PasswordResetRequest.objects.get(token=token)
+                    if prr.active:
+                        user = prr.user
+                        user.set_password(password)
+                        user.save()
 
-            user = prr.user
-            user.set_password(password)
-            user.save()
-            return HttpResponseRedirect(reverse('auth_app:login'))
+                        prr.active = False
+                        prr.save()
 
-    return render(request, 'auth_app/password_reset.html')
+                        # Redirect to login
+                        return redirect('account_app:login')
+                    else:
+                        # return invalid token
+                        pass
+
+                except:
+                    print("Invalid password reset attempt.")
+                    # return invalid token
+            else:
+                context = {"error_message": "Passwords did not match."}
+        else:
+            # return invalid token
+            pass
+
+    return render(request, 'account_app/reset_password.html', context)

@@ -12,4 +12,6 @@ urlpatterns = [
     path('delete/', views.delete, name="delete"),
     path('request-reset-token/', views.request_reset_token,
          name="request_reset_token"),
+    path('reset-password/', views.reset_password,
+         name="reset_password"),
 ]
