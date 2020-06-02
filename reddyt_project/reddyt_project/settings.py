@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_rq',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,16 @@ CHANNEL_LAYERS = {
     "default": {
         # <- use this ONLY in development, production env. should use redis
         "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+# Docker Redis setup for task queues
+RQ_QUEUES = {
+    'default': {
+        'HOST': '192.168.99.103',
+        'PORT': '6379',
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
     }
 }
 
