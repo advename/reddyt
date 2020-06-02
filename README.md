@@ -1,5 +1,9 @@
 # reddyt
 
+### WARNING: THIS BRANCH ONLY WORKS ON UNIX SYSTEMS
+
+--> Task queues do not work on windows machines : https://stackoverflow.com/a/19547482/3673659
+
 reddyt is a small reddit clone written with Django and Django REST Framework.
 
 ![Screenshot of reddyt](screenshot.png)

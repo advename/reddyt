@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.conf import settings  # import email sender address
+import django_rq
+from . messaging import email_message
 
 from notification_app.models import Notification
 from .models import PasswordResetRequest
@@ -171,17 +173,12 @@ def request_reset_token(request):
             # Send email
             reset_url = request.build_absolute_uri(reverse(
                 'account_app:reset_password')) + "?token=" + token
-            alt_body = f"To reset your password, click the following link: {reset_url}"
-            body = ("<html>"
-                    "<head></head>"
-                    "<body>"
-                    f"<h4>To reset your password, click <a href='{reset_url} '>this link</a></h4>"
-                    "</body>"
-                    "</html>"
-                    )
 
-            send_mail('Password reset', alt_body, settings.EMAIL_HOST_USER, [
-                      settings.EMAIL_HOST_USER, ], html_message=body)
+            # You usually want to send emails using a task queue
+            django_rq.enqueue(email_message, {
+                'reset_url': reset_url,
+                'email': settings.EMAIL_HOST_USER
+            })
 
             # send here an email with the reset URL ...
         context = {"request_received": True}
